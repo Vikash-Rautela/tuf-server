@@ -9,7 +9,7 @@ const executeCode = async (req, res, next) => {
 
         const headers = {
             'content-type': 'application/json',
-            'X-RapidAPI-Key': '07ab44556fmsh37cedface5edd4ep1f0281jsn460a227d4c2a',
+            'X-RapidAPI-Key': process.env.API_KEY,
             'X-RapidAPI-Host': 'judge0-ce.p.rapidapi.com'
         };
 
