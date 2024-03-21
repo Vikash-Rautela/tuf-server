@@ -29,6 +29,10 @@ const executeCode = async (req, res, next) => {
             }
         );
 
+        if (submissionResponse.status !== 201) {
+            throw new Error(`Submission failed with status ${submissionResponse.status}`);
+        }
+
         const submissionToken = submissionResponse.data.token;
 
         await new Promise(resolve => setTimeout(resolve, 2000));
@@ -43,11 +47,19 @@ const executeCode = async (req, res, next) => {
                 headers
             }
         );
-        req.output = Buffer.from(resultResponse.data.stdout, 'base64').toString('utf-8');
+
+        if (resultResponse.status !== 200) {
+            throw new Error(`Failed to fetch result with status ${resultResponse.status}`);
+        }
+
+        const resultData = resultResponse.data;
+
+
+        req.output = Buffer.from(resultData.stdout, 'base64').toString('utf-8');
         next();
     } catch (error) {
-        console.error('Error executing code:', error);
-        res.status(500).json({ error: 'Internal server error' });
+        console.error('Error executing code:', error.message);
+        res.status(500).json({ error: error.message });
     }
 };
 
