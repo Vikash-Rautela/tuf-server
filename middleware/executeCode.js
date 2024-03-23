@@ -10,11 +10,11 @@ const executeCode = async (req, res, next) => {
         const headers = {
             'content-type': 'application/json',
             'X-RapidAPI-Key': process.env.API_KEY,
-            'X-RapidAPI-Host': 'judge0-ce.p.rapidapi.com'
+            'X-RapidAPI-Host': process.env.HOST
         };
 
         const submissionResponse = await axios.post(
-            'https://judge0-ce.p.rapidapi.com/submissions',
+            `${process.env.HOST_URL}/submissions`,
             {
                 language_id: languageId,
                 source_code: base64EncodedCode,
@@ -38,7 +38,7 @@ const executeCode = async (req, res, next) => {
         await new Promise(resolve => setTimeout(resolve, 2000));
 
         const resultResponse = await axios.get(
-            `https://judge0-ce.p.rapidapi.com/submissions/${submissionToken}`,
+            `${process.env.HOST_URL}/submissions/${submissionToken}`,
             {
                 params: {
                     base64_encoded: 'true',
